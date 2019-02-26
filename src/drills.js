@@ -20,7 +20,7 @@ function getAllText(searchTerm) {
     });
 }
 
-// getAllText('wings');
+getAllText('wings');
 
 function paginate(pageNumber) {
   const productsPerPage = 6;
@@ -36,7 +36,7 @@ function paginate(pageNumber) {
     });
 }
 
-// paginate(1);
+paginate(1);
 
 function getItemsAfter(daysAgo) {
   knexInstance
@@ -58,7 +58,7 @@ function getItemsAfter(daysAgo) {
     });
 }
 
-// getItemsAfter(30);
+getItemsAfter(30);
 
 function sumAllCategories() {
   knexInstance
