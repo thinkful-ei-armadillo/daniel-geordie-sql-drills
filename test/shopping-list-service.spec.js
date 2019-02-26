@@ -3,34 +3,34 @@ const shoppingService = require('../src/shopping-list-service');
 const knex = require('knex');
 
 describe('Shopping list service object', () => {
-    const db;
+    let db;
     const testItems = [
         {
             id: 1,
             name: 'first',
             date_added: new Date('2029-01-22T16:28:32.615Z'),
-            price: '5',
+            price: '5.00',
             category: 'Main'
         },
         {
             id: 2,
             name: 'first',
             date_added: new Date('2029-01-22T16:28:32.615Z'),
-            price: '5',
+            price: '5.00',
             category: 'Main'
         },
         {
             id: 3,
             name: 'first',
             date_added: new Date('2029-01-22T16:28:32.615Z'),
-            price: '5',
+            price: '5.00',
             category: 'Main'
         },
     ];
     before(() => {
       db = knex({
         client: 'pg',
-        connection: process.env.TEST_DB_URL
+        connection: process.env.DB_URL
       });
     });
 
@@ -86,7 +86,7 @@ describe('Shopping list service object', () => {
             const idToUp = 3;
             const updatedInfo = {
                 name: 'new',
-                price: '1',
+                price: '1.00',
                 date_added: new Date(),
                 checked: true
             }
@@ -100,4 +100,35 @@ describe('Shopping list service object', () => {
             }));
         })
     })
+
+    context('given that shopping_list has NO data', () => {
+
+        it('with no data, getAll should return an empty array', () => {
+            return shoppingService.getAll(db)
+                .then(actual => {
+                    expect(actual).to.eql([])
+                })
+        });
+
+        it('insertItem adds an item and provides it with an id', () => {
+            const testNewItem = {
+                name: 'test',
+                price: '3.55',
+                date_added: new Date('2010-01-01T12:12:12.000Z'),
+                checked: true,
+                category: 'Snack'
+            };
+            return shoppingService.insertItem(db, testNewItem)
+                .then(actual => {
+                    expect(actual).to.eql({
+                        id: 1,
+                        name: testNewItem.name,
+                        price: testNewItem.price,
+                        date_added: testNewItem.date_added,
+                        checked: testNewItem.checked,
+                        category: testNewItem.category
+                    })
+                });
+        });
+    });
 });
